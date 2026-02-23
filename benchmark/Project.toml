@@ -1,0 +1,4 @@
+[deps]
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+ProfileView = "c46f51b8-102a-5cf2-8d2c-8597cb0e0da7"
+SlicedWasserstein = "05f59641-2b5d-4861-9405-82d6a24e2192"
