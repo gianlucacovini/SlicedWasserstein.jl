@@ -232,11 +232,25 @@ Each environment is independent and must be instantiated separately.
 
 ---
 
-## How to run
+## Installation
 
-Clone the repository and instantiate the project:
+The package is not registered yet. It can be installed directly from GitHub with:
+
+```julia
+using Pkg
+Pkg.add(url="https://github.com/gianlucacovini/SlicedWasserstein.jl")
+```
+
+Then it can be loaded with:
+
+```julia
+using SlicedWasserstein
+```
+
+Alternatively, clone the repository and instantiate the project environment: 
 
 ```bash
+git clone https://github.com/gianlucacovini/SlicedWasserstein.jl.git
 julia --project
 pkg> instantiate
 ```
