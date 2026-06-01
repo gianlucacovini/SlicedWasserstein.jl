@@ -3,7 +3,7 @@ using Random
 using SlicedWasserstein
 
 @testset "Sample Directions" begin
-    rng = MersenneTwister(431943)
+    rng = Xoshiro(431943)
     M, d = 200, 5
     Z = sample_directions(M, d; rng=rng)
 
@@ -19,19 +19,19 @@ using SlicedWasserstein
     @test Z1 == Z2
 
     # Same RNG state => same draws
-    rngA = MersenneTwister(999)
-    rngB = MersenneTwister(999)
+    rngA = Xoshiro(999)
+    rngB = Xoshiro(999)
     Z3 = sample_directions(50, 3; rng=rngA)
     Z4 = sample_directions(50, 3; rng=rngB)
     @test Z3 == Z4
 
     # Seed overrides rng 
-    rngX = MersenneTwister(123)
+    rngX = Xoshiro(123)
     @test sample_directions(10, 3; rng=rngX, seed=7) == sample_directions(10, 3; seed=7)
 
     # Special cases
     Z5 = sample_directions(100, 1; seed=1)
-    @test all(abs.(Z5) .== 1.0)
+    @test all(isapprox.(abs.(Z5), 1.0; atol=1e-15))
 
     Z0 = sample_directions(0, 5; seed=1)
     @test size(Z0) == (5, 0)

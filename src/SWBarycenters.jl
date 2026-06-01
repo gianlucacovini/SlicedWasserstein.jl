@@ -35,7 +35,7 @@ function grad(
     pr_Y = [Vector{eltype(ν.X)}(undef, m) for _ in 1:T]
     grads = [zeros(eltype(μ.X), d, n) for _ in 1:T]
 
-    Threads.@threads for i_dir in 1:M
+    Threads.@threads :static for i_dir in 1:M
         tid = Threads.threadid()
 
         θ = @view(z[:, i_dir])  
@@ -46,7 +46,10 @@ function grad(
         radon_project!(pr_Y[tid], ν.X, θ)
         ν_proj = DiscreteMeasure(pr_Y[tid], ν.w; normalize=false)
         
-        I, J, Tm = OT1d_edge(μ_proj, ν_proj; compute_cost=false) 
+        r = OT1d(μ_proj, ν_proj; compute_cost=false, compute_edge=true)
+        I  = r.I::Vector{Int}
+        J  = r.J::Vector{Int}
+        Tm = r.Tm::Vector{Float64}
 
         g = grads[tid]
         px = pr_X[tid]
@@ -129,7 +132,7 @@ function SWBarycenters_free_supp(
     end
 
     if seed !== nothing
-        local_rng = MersenneTwister(seed)
+        local_rng = Xoshiro(seed)
     else
         local_rng = rng
     end
@@ -197,8 +200,8 @@ function SWBarycenters_free_supp(
     end
 
     if save_it
-        return iterations, DiscreteMeasure(ϕ; normalize=normalize)
+        return iterations, DiscreteMeasure(ϕ)
     end
 
-    return DiscreteMeasure(ϕ; normalize=normalize)
+    return DiscreteMeasure(ϕ)
 end

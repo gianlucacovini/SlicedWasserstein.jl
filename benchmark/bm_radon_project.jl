@@ -3,7 +3,7 @@ using SlicedWasserstein
 using Random
 using LinearAlgebra
 
-rng = MersenneTwister(431943)
+rng = Xoshiro(431943)
 
 X = rand(rng, 5, 100)
 w = rand(rng, 100)

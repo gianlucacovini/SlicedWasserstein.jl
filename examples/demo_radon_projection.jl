@@ -1,8 +1,9 @@
 using Random
 using LinearAlgebra
+using Plots
 using SlicedWasserstein
 
-rng = MersenneTwister(431943)
+rng = Xoshiro(431943)
 
 n1, n2 = 150, 150
 X1 = randn(rng, 2, n1) .+ [ -2.0, 0.0 ]

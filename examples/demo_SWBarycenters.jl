@@ -2,7 +2,7 @@ using Random
 using Plots
 using SlicedWasserstein
 
-rng = MersenneTwister(1234)
+rng = Xoshiro(1234)
 
 n = 150
 μ1 = DiscreteMeasure(randn(rng, 2, n) .+ [ 10.0, 10.0])

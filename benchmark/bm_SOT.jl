@@ -3,7 +3,7 @@ using BenchmarkTools
 using SlicedWasserstein
 using LinearAlgebra
 
-rng = MersenneTwister(431943)
+rng = Xoshiro(431943)
 
 d  = 10
 nX = 1000

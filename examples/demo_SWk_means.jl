@@ -20,7 +20,7 @@ seed_algo  = 1234
 noise_range = -25:25
 
 # Data seed
-rng = MersenneTwister(42)
+rng = Xoshiro(42)
 
 measures = Vector{DiscreteMeasure{Float64}}(undef, nmeasures)
 noise = rand(rng, noise_range, d, nmeasures)

@@ -4,7 +4,7 @@ using Random
 
 @testset "SOT" begin
     @testset "throws on different total masses" begin
-        rng = MersenneTwister(1)
+        rng = Xoshiro(1)
         Xμ = rand(rng, 3, 5)
         Xν = rand(rng, 3, 5)
         μ = DiscreteMeasure(Xμ, fill(1.0, 5); normalize=false)
@@ -14,14 +14,14 @@ using Random
     end
 
     @testset "throws on dimension mismatch" begin
-        rng = MersenneTwister(10)
+        rng = Xoshiro(10)
         μ = DiscreteMeasure(rand(rng, 3, 10))
         ν = DiscreteMeasure(rand(rng, 4, 10))
         @test_throws ArgumentError SOT(μ, ν; M=10, seed=1) 
     end
 
     @testset "deterministic when seed is fixed (up to floating error)" begin
-        rng = MersenneTwister(2)
+        rng = Xoshiro(2)
         d, n = 5, 50
         Xμ = rand(rng, d, n)
         Xν = rand(rng, d, n)
@@ -38,7 +38,7 @@ using Random
     end
 
     @testset "identity: SOT(μ,μ) ≈ 0" begin
-        rng = MersenneTwister(3)
+        rng = Xoshiro(3)
         d, n = 4, 40
         X = rand(rng, d, n)
         w = rand(rng, n); w ./= sum(w)
@@ -49,7 +49,7 @@ using Random
     end
 
     @testset "nonnegativity (squared cost)" begin
-        rng = MersenneTwister(4)
+        rng = Xoshiro(4)
         d, n = 4, 40
         Xμ = rand(rng, d, n)
         Xν = rand(rng, d, n)
@@ -64,7 +64,7 @@ using Random
     end
 
     @testset "d = 1 matches OT1d (squared cost)" begin
-        rng = MersenneTwister(5)
+        rng = Xoshiro(5)
         n = 30
         x = rand(rng, n)
         y = rand(rng, n)
@@ -74,14 +74,14 @@ using Random
         μ = DiscreteMeasure(x, wμ)
         ν = DiscreteMeasure(y, wν)
 
-        ot = OT1d(μ, ν)
+        ot = OT1d(μ, ν).cost::Float64
         sot = SOT(μ, ν; M=500, seed=7)
 
         @test isapprox(sot, ot; atol=1e-8, rtol=1e-8)
     end
 
     @testset "M=0 should throw (recommended behavior)" begin
-        rng = MersenneTwister(6)
+        rng = Xoshiro(6)
         μ = DiscreteMeasure(rand(rng, 3, 10))
         ν = DiscreteMeasure(rand(rng, 3, 10))
         @test_throws ArgumentError SOT(μ, ν; M=0, seed=1)

@@ -4,7 +4,7 @@ using Statistics
 using Plots
 using SlicedWasserstein
 
-rng  = MersenneTwister(431943)
+rng  = Xoshiro(431943)
 seed = 12345
 
 # Build two 2D discrete measures (two clusters)
@@ -71,7 +71,7 @@ println("  abs cost     SOT = ", s_abs)
 θ = randn(rng, 2); θ ./= norm(θ)
 μp = radon_project(μ, θ)
 νp = radon_project(ν, θ)
-ot_slice = OT1d(μp, νp)
+ot_slice = OT1d(μp, νp).cost
 
 p2 = plot(μp; dims=(1,), label="μ projected", color=:blue,
           title="One random 1D slice")

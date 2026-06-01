@@ -8,7 +8,7 @@ using Plots
 
 export DiscreteMeasure, sort_1d, print_full
 export sample_directions, radon_project, radon_project!
-export OT1d, OT1d_edge, SOT
+export OT1d, OT1dResult, SOT
 export SWBarycenters_free_supp, grad
 export SWk_means
 

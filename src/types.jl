@@ -4,7 +4,7 @@ import Statistics: mean
 
 """
     DiscreteMeasure(X, w; normalize=true)
-    DiscreteMeasure(X; normalize=true)
+    DiscreteMeasure(X)
 
 A discrete measure supported on a finite set of points.
 
@@ -12,7 +12,7 @@ A discrete measure supported on a finite set of points.
 - `X::Matrix{T}`: a `d × n` matrix where each column represents a point in `ℝ^d`.
 - `w::Vector{T}`: a vector of length `n` representing the weights associated with each point.
 - `T<:Real`: the numeric type of the points and weights.
-- By default, weights are normalized to sum to 1. Set `normalize=false` to disable this behavior.
+- When `w` is provided, weights are normalized to sum to 1 by default; set `normalize=false` to disable. When `w` is omitted, uniform weights are used (already normalized).
 
 # Examples
 ```julia
@@ -51,10 +51,10 @@ function DiscreteMeasure(X::AbstractMatrix{TX}, w::AbstractVector{TW}; normalize
     return DiscreteMeasure{T}(T.(X), T.(w); normalize=normalize)
 end
 
-function DiscreteMeasure(X::AbstractMatrix{T}; normalize::Bool=true) where {T <: Real}
+function DiscreteMeasure(X::AbstractMatrix{T}) where {T <: Real}
     n = size(X,2)
     w = fill(one(T)/n, n)
-    return DiscreteMeasure(X, w; normalize=normalize)
+    return DiscreteMeasure(X, w; normalize=false)
 end
 
 function DiscreteMeasure(X::AbstractVector{TX}, w::AbstractVector{TW}; normalize::Bool=true) where {TX <: Real, TW <: Real}
@@ -69,11 +69,8 @@ function DiscreteMeasure(X::AbstractMatrix{TX}, w::AbstractMatrix{TW}; normalize
     return DiscreteMeasure(X, w_vec; normalize=normalize)
 end
 
-function DiscreteMeasure(X::AbstractVector{T}; normalize::Bool=true) where {T <: Real}
-    n = length(X) 
-    X_mat = reshape(X, 1, :)
-    w = fill(one(T)/n, n)
-    return DiscreteMeasure(X_mat, w; normalize=normalize)
+function DiscreteMeasure(X::AbstractVector{T}) where {T <: Real}
+    return DiscreteMeasure(reshape(X, 1, :))
 end
 
 DiscreteMeasure(μ::DiscreteMeasure) = μ

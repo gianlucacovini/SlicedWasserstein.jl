@@ -10,7 +10,7 @@ Compute the Sliced Optimal Transport (SOT) distance between two discrete measure
 - `M::Integer=1000`: Number of random projections to use.
 - `cost::Function=(x, y) -> (x - y)^2`: Cost function to use in 1D optimal transport.
 - `rng::AbstractRNG=Random.default_rng()`: Random number generator to use.
-- `seed::Union{Integer, Nothing}=nothing`: If provided, it overrides `rng` and initializes a new `MersenneTwister` with the given seed.
+- `seed::Union{Integer, Nothing}=nothing`: If provided, it overrides `rng` and initializes a new `Xoshiro` with the given seed.
 
 # Returns
 - `d::Float64`: The estimated SOT distance between `μ` and `ν
@@ -32,12 +32,10 @@ function SOT(
 
     T = Threads.maxthreadid()
 
-    promote_type(eltype(μ.X), Float64)
-
     pr_X = [Vector{eltype(μ.X)}(undef, size(μ.X, 2)) for _ in 1:T]
     pr_Y = [Vector{eltype(ν.X)}(undef, size(ν.X, 2)) for _ in 1:T]
     sums = zeros(Float64, T)
-    Threads.@threads for i in 1:M
+    Threads.@threads :static for i in 1:M
         tid = Threads.threadid()
 
         θ = @view(z[:, i])
@@ -48,7 +46,7 @@ function SOT(
         radon_project!(pr_Y[tid], ν.X, θ)
         ν_proj = DiscreteMeasure(pr_Y[tid], ν.w; normalize=false)
 
-        sums[tid] += OT1d(μ_proj, ν_proj; cost=cost)
+        sums[tid] += OT1d(μ_proj, ν_proj; cost=cost).cost::Float64
     end
 
     return sum(sums) / M

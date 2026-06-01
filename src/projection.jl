@@ -8,7 +8,7 @@ Sample `M` random directions in `d` dimensions, uniformly from the unit sphere.
 - `M::Integer`: Number of directions to sample (must be `≥ 0`).
 - `d::Integer`: Dimension of the space (must be `> 0`).
 - `rng::AbstractRNG`: Random number generator to use (default: `Random.default_rng()`).
-- `seed::Union{Integer, Nothing}`: If provided, it overrides `rng` and initializes a new `MersenneTwister` with the given seed.
+- `seed::Union{Integer, Nothing}`: If provided, it overrides `rng` and initializes a new `Xoshiro` with the given seed.
 - `T::Type{<:AbstractFloat}`: The floating-point type for the output (default: `Float64`).
 
 # Returns
@@ -23,13 +23,12 @@ function sample_directions(
     )
     (M ≥ 0 && d ≥ 1) || throw(ArgumentError("The first argument must be ≥ 0 and the second > 0"))
 
-    local_rng = seed === nothing ? rng : Random.MersenneTwister(seed)
+    local_rng = seed === nothing ? rng : Random.Xoshiro(seed)
     
     Z = randn(local_rng, T, d, M)
 
     @inbounds for j in 1:M
-            norm = sqrt(sum(abs2, @view(Z[:, j])))
-            @view(Z[:, j]) ./= norm
+        LinearAlgebra.normalize!(@view(Z[:, j]))
     end
         
     return Z
@@ -53,10 +52,8 @@ function radon_project(
     d, n = size(μ.X)
     (d == length(θ)) || throw(ArgumentError("The points and the direction have different dimension"))
 
-    S = promote_type(eltype(μ.X), eltype(θ))
-    pr_X = Vector{S}(undef, n)
-
-    mul!(pr_X, S.(μ.X'), S.(θ))
+    pr_X = Vector{T}(undef, n)
+    radon_project!(pr_X, μ.X, θ)
 
     return DiscreteMeasure(pr_X, μ.w; normalize=false)
 end

@@ -4,7 +4,7 @@ using LinearAlgebra
 using Statistics
 using SlicedWasserstein
 
-rng = MersenneTwister(431943)
+rng = Xoshiro(431943)
 
 function make_data(TX::Type, TW::Type, d::Int, n::Int; normalize_w::Bool=true)
     X = rand(rng, TX, d, n)

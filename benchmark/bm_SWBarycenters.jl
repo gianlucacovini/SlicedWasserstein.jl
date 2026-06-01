@@ -3,7 +3,7 @@ using BenchmarkTools
 using LinearAlgebra
 using SlicedWasserstein
 
-rng = MersenneTwister(1)
+rng = Xoshiro(1)
 
 X1 = randn(rng, 2, 600) .+ [-2.0; 0.0]
 X2 = randn(rng, 2, 600) .+ [ 2.0; 0.0]

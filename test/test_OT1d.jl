@@ -5,7 +5,7 @@ using SlicedWasserstein
     @testset "basic value (squared cost)" begin
         μ = DiscreteMeasure([0.0, 1.0], [0.5, 0.5])
         ν = DiscreteMeasure([0.0, 2.0], [0.5, 0.5])
-        @test OT1d(μ, ν) ≈ 0.5
+        @test OT1d(μ, ν).cost ≈ 0.5
     end
 
     @testset "invariance to input ordering" begin
@@ -15,52 +15,60 @@ using SlicedWasserstein
         μ2 = DiscreteMeasure([3.0, 0.0, 1.0], [0.3, 0.2, 0.5]; normalize=false)
         ν2 = DiscreteMeasure([4.0, 2.0, 0.0], [0.3, 0.5, 0.2]; normalize=false)
 
-        @test OT1d(μ1, ν1) ≈ OT1d(μ2, ν2)
+        @test OT1d(μ1, ν1).cost ≈ OT1d(μ2, ν2).cost
     end
 
     @testset "custom cost" begin
         μ = DiscreteMeasure([0.0, 1.0], [0.5, 0.5])
         ν = DiscreteMeasure([0.0, 2.0], [0.5, 0.5])
         c = (x, y) -> abs(x - y)
-        @test OT1d(μ, ν; cost=c) ≈ 0.5
+        @test OT1d(μ, ν; cost=c).cost ≈ 0.5
     end
 
     @testset "unnormalized equal mass works" begin
-        μ = DiscreteMeasure([0.0, 1.0], [1.0, 1.0]; normalize=false)      # mass 2
-        ν = DiscreteMeasure([0.0, 2.0], [0.5, 1.5]; normalize=false)      # mass 2
-        @test OT1d(μ, ν) ≥ 0
+        μ = DiscreteMeasure([0.0, 1.0], [1.0, 1.0]; normalize=false)
+        ν = DiscreteMeasure([0.0, 2.0], [0.5, 1.5]; normalize=false)
+        @test OT1d(μ, ν).cost ≥ 0
     end
 
-    @testset "compute_plan returns consistent plan (unsorted inputs)" begin
-        # Deliberately unsorted supports to catch plan reindexing bugs
+    @testset "compute_edge returns consistent plan (unsorted inputs)" begin
         μ = DiscreteMeasure([1.0, 0.0], [0.25, 0.75]; normalize=false)
         ν = DiscreteMeasure([2.0, 0.0], [0.50, 0.50]; normalize=false)
 
-        s, P = OT1d(μ, ν; compute_plan=true)
+        r = OT1d(μ, ν; compute_edge=true)
+        s  = r.cost
+        I  = r.I::Vector{Int}
+        J  = r.J::Vector{Int}
+        Tm = r.Tm::Vector{Float64}
+
+        n, m = size(μ.X, 2), size(ν.X, 2)
+        P = zeros(Float64, n, m)
+        for k in eachindex(Tm)
+            P[I[k], J[k]] += Tm[k]
+        end
 
         @test size(P) == (2, 2)
         @test sum(P) ≈ sum(μ.w) ≈ sum(ν.w)
         @test all(P .>= 0)
-
         @test vec(sum(P, dims=2)) ≈ μ.w
         @test vec(sum(P, dims=1)) ≈ ν.w
 
-        cost = (x, y) -> (x - y)^2
-        s_from_P = 0.0
-        for i in 1:2, j in 1:2
-            s_from_P += P[i, j] * cost(μ.X[1, i], ν.X[1, j])
-        end
+        cost_fn = (x, y) -> (x - y)^2
+        s_from_P = sum(P[i,j] * cost_fn(μ.X[1,i], ν.X[1,j]) for i in 1:n, j in 1:m)
         @test s ≈ s_from_P
     end
 
-    @testset "OT1d_edge matches OT1d and has correct marginals" begin
+    @testset "edge list has correct marginals" begin
         μ = DiscreteMeasure([3.0, 0.0, 1.0], [0.3, 0.2, 0.5]; normalize=false)
         ν = DiscreteMeasure([4.0, 2.0, 0.0], [0.3, 0.5, 0.2]; normalize=false)
 
-        s = OT1d(μ, ν)
-        s2, I, J, Tm = OT1d_edge(μ, ν; compute_cost=true, compute_edge=true)
+        r_cost = OT1d(μ, ν)
+        r_edge = OT1d(μ, ν; compute_edge=true)
 
-        @test s2 ≈ s
+        @test r_edge.cost ≈ r_cost.cost
+        I  = r_edge.I::Vector{Int}
+        J  = r_edge.J::Vector{Int}
+        Tm = r_edge.Tm::Vector{Float64}
         @test length(I) == length(J) == length(Tm)
         @test all(Tm .>= 0)
         @test sum(Tm) ≈ sum(μ.w) ≈ sum(ν.w)
@@ -88,7 +96,7 @@ using SlicedWasserstein
     @testset "Float32 behavior" begin
         μ = DiscreteMeasure(Float32[0,1], Float32[0.5,0.5])
         ν = DiscreteMeasure(Float32[0,2], Float32[0.5,0.5])
-        @test OT1d(μ, ν) ≈ 0.5
+        @test OT1d(μ, ν).cost ≈ 0.5
     end
 end
 

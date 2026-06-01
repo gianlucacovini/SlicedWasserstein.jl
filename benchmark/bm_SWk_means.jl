@@ -16,7 +16,7 @@ itmax_bary = 20
 seed_algo  = 1234
 
 # Data seed
-rng = MersenneTwister(42)
+rng = Xoshiro(42)
 
 measures = Vector{DiscreteMeasure{Float64}}(undef, nmeasures)
 noise = rand(rng, -25:25, d, nmeasures)

@@ -37,7 +37,7 @@ function SWk_means(
     (k ≥ 1) || throw(ArgumentError("The number of clusters must be at least 1"))
     (itmax ≥ 1) || throw(ArgumentError("The maximum number of iterations must be at least 1"))
     
-    local_rng = seed === nothing ? rng : MersenneTwister(seed)
+    local_rng = seed === nothing ? rng : Xoshiro(seed)
 
     # Warm-initialize (k-means++)
     centroids = Vector{DiscreteMeasure{eltype(measures[1].X)}}(undef, k)
@@ -107,16 +107,20 @@ function SWk_means(
 
         for c in 1:k
             if counts[c] == 0
-                worst_dist = SOT(measures[1], centroids[assignments[1]]; rng=local_rng, M=M_SOT)
-                worst_idx = 1
-                for j in 2:n_meas
+                worst_dist = -Inf
+                worst_idx = -1
+                for j in 1:n_meas
+                    counts[assignments[j]] > 1 || continue
                     curr_dist = SOT(measures[j], centroids[assignments[j]]; rng=local_rng, M=M_SOT)
                     if curr_dist > worst_dist
                         worst_dist = curr_dist
                         worst_idx = j
                     end
                 end
-                
+
+                worst_idx == -1 && continue
+                counts[assignments[worst_idx]] -= 1
+                counts[c] = 1
                 assignments[worst_idx] = c
                 centroids[c] = measures[worst_idx]
 

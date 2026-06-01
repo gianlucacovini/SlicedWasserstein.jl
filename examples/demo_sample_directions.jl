@@ -3,7 +3,7 @@ using SlicedWasserstein
 using Plots
 using StatsBase
 
-rng = MersenneTwister(431943)
+rng = Xoshiro(431943)
 
 M = 2000
 Z = sample_directions(M, 2; rng=rng)

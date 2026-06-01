@@ -3,7 +3,7 @@ using LinearAlgebra
 using SlicedWasserstein
 using Plots
 
-rng = MersenneTwister(431943)
+rng = Xoshiro(431943)
 
 # Construct a 2D discrete measure
 n = 200

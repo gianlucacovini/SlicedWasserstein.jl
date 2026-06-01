@@ -4,7 +4,7 @@ using SlicedWasserstein
 
 M = 1_000
 d = 2
-rng = MersenneTwister(431943)
+rng = Xoshiro(431943)
 
 println("Detailed benchmark (M=$M, d=$d):")
 b = @benchmark sample_directions($M, $d; rng=$rng)

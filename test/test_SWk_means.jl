@@ -6,7 +6,7 @@ using StatsBase
 @testset "SWk_means tests" begin
 
     @testset "basic 2-cluster separation" begin
-        rng = MersenneTwister(37)
+        rng = Xoshiro(37)
         d = 2
 
         measures = Vector{DiscreteMeasure{Float64}}(undef, 6)
@@ -31,7 +31,7 @@ using StatsBase
     end
 
     @testset "reproducibility with seed" begin
-        rng = MersenneTwister(123)
+        rng = Xoshiro(123)
         d = 2
 
         measures = Vector{DiscreteMeasure{Float64}}(undef, 4)
@@ -62,7 +62,7 @@ using StatsBase
     end
 
     @testset "K = 1 (single cluster) behaviour" begin
-        rng = MersenneTwister(7)
+        rng = Xoshiro(7)
         d = 3
         measures = [DiscreteMeasure(0.1 * randn(rng, d, 5) .+ i) for i in 1:3]
 
@@ -78,7 +78,7 @@ using StatsBase
     end
 
     @testset "K equals number of measures - loose check" begin
-        rng = MersenneTwister(55)
+        rng = Xoshiro(55)
         d = 2
         N = 4
         measures = [DiscreteMeasure(rand(rng, d, 6) .+ i) for i in 1:N]
@@ -94,7 +94,7 @@ using StatsBase
     end
 
     @testset "output shapes and types" begin
-        rng = MersenneTwister(101)
+        rng = Xoshiro(101)
         d = 2
         measures = [DiscreteMeasure(rand(rng, d, 4)) for _ in 1:5]
 
@@ -114,7 +114,7 @@ using StatsBase
     end
 
     @testset "dispatch: Vector{DiscreteMeasure{Float64}} vs Vector{DiscreteMeasure}" begin
-        rng = MersenneTwister(202)
+        rng = Xoshiro(202)
         d = 2
 
         measures_typed = Vector{DiscreteMeasure{Float64}}(undef, 3)

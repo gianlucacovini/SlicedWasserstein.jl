@@ -7,7 +7,7 @@ using SlicedWasserstein
 
 @testset "SWBarycenters Fixed Support" begin
     @testset "SWBarycenters_free_supp argument validation" begin
-        rng = MersenneTwister(0)
+        rng = Xoshiro(0)
         μ = DiscreteMeasure(randn(rng, 2, 10))
         ν = DiscreteMeasure(randn(rng, 2, 10))
 
@@ -24,7 +24,7 @@ using SlicedWasserstein
     end
 
     @testset "SWBarycenters_free_supp reproducibility with seed" begin
-        rng = MersenneTwister(999)
+        rng = Xoshiro(999)
 
         X1 = randn(rng, 2, 40) .+ [-2.0; 0.0]
         X2 = randn(rng, 2, 40) .+ [ 2.0; 0.0]
@@ -47,7 +47,7 @@ using SlicedWasserstein
     end
 
     @testset "SWBarycenters_free_supp smoke test" begin
-        rng = MersenneTwister(2024)
+        rng = Xoshiro(2024)
 
         X1 = randn(rng, 2, 80) .+ [-2.0; 0.0]
         X2 = randn(rng, 2, 80) .+ [ 2.0; 0.0]
@@ -66,7 +66,7 @@ using SlicedWasserstein
     end
 
     @testset "Identity: barycenter of identical measures" begin 
-        rng = MersenneTwister(0) 
+        rng = Xoshiro(0) 
         X = randn(rng, 2, 50) 
         μ = DiscreteMeasure(X) 
 
@@ -79,7 +79,7 @@ using SlicedWasserstein
     end
 
     @testset "Dirac measures: barycenter = weighted mean (analytic)" begin
-        rng = MersenneTwister(1)
+        rng = Xoshiro(1)
 
         x1 = [-2.0, 0.0]
         x2 = [ 3.0, 1.0]
@@ -99,7 +99,7 @@ using SlicedWasserstein
     end
 
     @testset "Symmetry: mirrored measures -> centered barycenter" begin
-        rng = MersenneTwister(2024)
+        rng = Xoshiro(2024)
         X1 = randn(rng, 2, 200) .+ [-2.0; 0.0]
         X2 = randn(rng, 2, 200) .+ [ 2.0; 0.0]
         μ1 = DiscreteMeasure(X1)
@@ -116,7 +116,7 @@ using SlicedWasserstein
     end
 
     @testset "Weight influence: barycenter shifts toward heavier measure" begin
-        rng = MersenneTwister(10)
+        rng = Xoshiro(10)
         X1 = randn(rng, 2, 150) .+ [-3.0; 0.0]
         X2 = randn(rng, 2, 150) .+ [ 3.0; 0.0]
         μ1 = DiscreteMeasure(X1)
@@ -138,7 +138,7 @@ using SlicedWasserstein
     end
 
     @testset "Objective decreases with more iterations (approx)" begin
-        rng = MersenneTwister(77)
+        rng = Xoshiro(77)
         X1 = randn(rng, 2, 120) .+ [-2.0; 0.0]
         X2 = randn(rng, 2, 120) .+ [ 2.0; 0.0]
         μ1 = DiscreteMeasure(X1)
