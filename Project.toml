@@ -1,6 +1,6 @@
 name = "SlicedWasserstein"
 uuid = "05f59641-2b5d-4861-9405-82d6a24e2192"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["gianlucacovini <gianlucacovini00@gmail.it>"]
 
 [deps]
