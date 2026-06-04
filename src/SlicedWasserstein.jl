@@ -4,7 +4,6 @@ using LinearAlgebra
 using Random
 using Statistics
 using StatsBase
-using Plots
 
 export DiscreteMeasure, sort_1d, print_full
 export sample_directions, radon_project, radon_project!
