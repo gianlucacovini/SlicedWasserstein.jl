@@ -21,6 +21,9 @@ docs/site/
 LocalPreferences.toml
 JuliaLocalPreferences.toml
 
+# Manifest — not committed for packages (only for applications)
+/Manifest.toml
+
 # Other files
 .vscode/
 test/TODO.txt
