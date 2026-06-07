@@ -1,7 +1,7 @@
 ﻿# SlicedWasserstein.jl
 
 `SlicedWasserstein.jl` is a lightweight Julia package for computations with
-discrete measures using sliced optimal transport.
+finite discrete measures using sliced optimal transport.
 
 The package currently provides:
 
@@ -42,9 +42,16 @@ using SlicedWasserstein
 SOT(μ, ν; M = 100, seed = 1)
 ```
 
+## Further reading
+
+See [Background and methodology](background.md) for a short introduction to the
+optimal transport and sliced Wasserstein ideas used by the package.
+
+See [API Reference](api.md) for the documented public interface.
+
 ## Contents
 
 ```@contents
-Pages = ["index.md", "api.md"]
+Pages = ["index.md", "background.md", "api.md"]
 Depth = 2
 ```

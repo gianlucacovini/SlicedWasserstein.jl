@@ -13,6 +13,7 @@ makedocs(
     modules = [SlicedWasserstein],
     pages = [
         "Home" => "index.md",
+        "Background and methodology" => "background.md",
         "API Reference" => "api.md",
     ],
     checkdocs = :exports,
