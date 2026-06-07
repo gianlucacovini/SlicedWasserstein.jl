@@ -28,3 +28,5 @@ JuliaLocalPreferences.toml
 .vscode/
 test/TODO.txt
 scripts/various_plots.jl
+
+docs/Manifest.toml
