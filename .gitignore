@@ -30,3 +30,6 @@ test/TODO.txt
 scripts/various_plots.jl
 
 docs/Manifest.toml
+
+test/Manifest.toml
+benchmark/Manifest.toml
