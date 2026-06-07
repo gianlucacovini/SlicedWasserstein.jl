@@ -21,4 +21,5 @@ makedocs(
 
 deploydocs(
     repo = "github.com/gianlucacovini/SlicedWasserstein.jl.git",
+    forcepush = true,
 )
