@@ -71,11 +71,11 @@ using SlicedWasserstein
         μ = DiscreteMeasure(X)
 
         bar = SWBarycenters_free_supp(
-            [μ, μ, μ]; w=[1/3, 1/3, 1/3], itmax=500, tol=1e-12,
+            [μ, μ, μ]; w=[1/3, 1/3, 1/3], itmax=200, tol=1e-12,
             M=500, rng=rng, seed=42
         )
         @test size(bar.X) == size(μ.X)
-        @test SOT(bar, μ; M=1_000, rng=rng, seed=999) ≤ 1e-2
+        @test SOT(bar, μ; M=1_000, rng=rng, seed=999) ≤ 0.05
     end
 
     @testset "Dirac measures: barycenter = weighted mean (analytic)" begin

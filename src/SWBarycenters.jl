@@ -147,13 +147,7 @@ function SWBarycenters_free_supp(
         n_supp = max(n_supp, n_supp_min)
     end
 
-    # warm-start 
-    ϕ = zeros(d, n_supp)
-    for j in 1:len_meas
-        ϕ .+= w[j] .* mean(measures[j])
-    end
-
-    # weighted average second moment around each measure mean
+    # weighted average second moment around each measure mean (for η auto-selection)
     s2 = 0.0
     for j in 1:len_meas
         μ = measures[j]
@@ -168,8 +162,16 @@ function SWBarycenters_free_supp(
         η = maximum([0.5*σ^2, 0.5])
     end
 
-    # add small noise to avoid collapse
-    ϕ = ϕ .+ 0.5 * σ^2 .* randn(local_rng, d, n_supp)
+    # warm-start: sample n_supp points from the weighted mixture of input measures,
+    # then re-center at the correct barycenter centroid (so sampling noise doesn't bias convergence)
+    all_X = hcat([m.X for m in measures]...)
+    all_w_vec = vcat([w[j] .* m.w for (j, m) in enumerate(measures)]...)
+    ϕ = all_X[:, sample(local_rng, 1:length(all_w_vec), Weights(all_w_vec), n_supp; replace=true)]
+    target_centroid = zeros(eltype(ϕ), d)
+    for j in 1:len_meas
+        target_centroid .+= w[j] .* (measures[j].X * measures[j].w)
+    end
+    ϕ .+= reshape(target_centroid .- vec(mean(ϕ; dims=2)), d, 1)
 
     # SGD update
     prev_ϕ = fill(Inf, size(ϕ))
