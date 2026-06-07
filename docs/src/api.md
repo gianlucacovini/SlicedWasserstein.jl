@@ -23,9 +23,8 @@ radon_project!
 
 ```@docs
 OT1d
+OT1dResult
 ```
-
-`OT1d` returns an `OT1dResult` with fields `cost`, `I`, `J`, and `Tm`.
 
 ## Sliced optimal transport
 
@@ -48,6 +47,6 @@ SWk_means
 
 ## Display helpers
 
-`print_full(μ)` prints a `DiscreteMeasure` without truncating its support.
-
-`print_full(μs)` prints a vector of discrete measures without truncation.
+```@docs
+print_full
+```

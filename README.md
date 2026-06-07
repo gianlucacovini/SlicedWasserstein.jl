@@ -16,15 +16,6 @@ evolve.
 
 ## Installation
 
-Before registration, install the package directly from GitHub:
-
-```julia
-using Pkg
-Pkg.add(url = "https://github.com/gianlucacovini/SlicedWasserstein.jl")
-```
-
-After registration in the Julia General registry, it can be installed with:
-
 ```julia
 using Pkg
 Pkg.add("SlicedWasserstein")

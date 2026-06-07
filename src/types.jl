@@ -101,6 +101,12 @@ function show(io::IO, μ::DiscreteMeasure)
     end
 end
 
+"""
+    print_full(μ)
+    print_full(μs)
+
+Print a `DiscreteMeasure` (or a vector of them) without truncating the support.
+"""
 print_full(μ::DiscreteMeasure) = show(IOContext(stdout, :limit => false), μ)
 print_full(io::IO, μ::DiscreteMeasure) = show(IOContext(io, :limit => false), μ)
 

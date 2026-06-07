@@ -1,4 +1,15 @@
 
+"""
+    OT1dResult{T<:Real}
+
+Result returned by [`OT1d`](@ref).
+
+# Fields
+- `cost`: optimal transport cost, or `nothing` if not requested.
+- `I`: source indices of each transported edge, or `nothing`.
+- `J`: target indices of each transported edge, or `nothing`.
+- `Tm`: transported masses per edge, or `nothing`.
+"""
 struct OT1dResult{T<:Real}
     cost::Union{T, Nothing}
     I::Union{Vector{Int}, Nothing}

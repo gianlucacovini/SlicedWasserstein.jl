@@ -17,15 +17,6 @@ The package currently provides:
 
 ## Installation
 
-Before registration, install the package directly from GitHub:
-
-```julia
-using Pkg
-Pkg.add(url = "https://github.com/gianlucacovini/SlicedWasserstein.jl")
-```
-
-After registration, it can be installed with:
-
 ```julia
 using Pkg
 Pkg.add("SlicedWasserstein")

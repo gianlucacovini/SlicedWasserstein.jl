@@ -18,3 +18,8 @@ makedocs(
     ],
     checkdocs = :exports,
 )
+
+deploydocs(
+    repo = "github.com/gianlucacovini/SlicedWasserstein.jl",
+    devbranch = "main",
+)
