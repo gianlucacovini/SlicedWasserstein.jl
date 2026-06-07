@@ -65,17 +65,17 @@ using SlicedWasserstein
         @test isapprox(sum(bar.w), 1.0; atol=1e-10)
     end
 
-    @testset "Identity: barycenter of identical measures" begin 
-        rng = Xoshiro(0) 
-        X = randn(rng, 2, 50) 
-        μ = DiscreteMeasure(X) 
+    @testset "Identity: barycenter of identical measures" begin
+        rng = Xoshiro(0)
+        X = randn(rng, 2, 50)
+        μ = DiscreteMeasure(X)
 
         bar = SWBarycenters_free_supp(
-            [μ, μ, μ]; w=[1/3, 1/3, 1/3], itmax=200, tol=1e-12, η=10, # note η=10 
-            M=500, rng=rng 
-        ) 
-        @test size(bar.X) == size(μ.X) 
-        @test SOT(bar, μ; M=1_000, rng=rng, seed=999) ≤ 1e-2 
+            [μ, μ, μ]; w=[1/3, 1/3, 1/3], itmax=500, tol=1e-12,
+            M=500, rng=rng, seed=42
+        )
+        @test size(bar.X) == size(μ.X)
+        @test SOT(bar, μ; M=1_000, rng=rng, seed=999) ≤ 1e-2
     end
 
     @testset "Dirac measures: barycenter = weighted mean (analytic)" begin
