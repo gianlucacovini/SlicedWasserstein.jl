@@ -20,6 +20,5 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/gianlucacovini/SlicedWasserstein.jl",
-    devbranch = "main",
+    repo = "github.com/gianlucacovini/SlicedWasserstein.jl.git",
 )

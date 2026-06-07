@@ -1,5 +1,8 @@
 ﻿# SlicedWasserstein.jl
 
+[![CI](https://github.com/gianlucacovini/SlicedWasserstein.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/gianlucacovini/SlicedWasserstein.jl/actions/workflows/CI.yml)
+[![Documentation](https://github.com/gianlucacovini/SlicedWasserstein.jl/actions/workflows/Documentation.yml/badge.svg)](https://github.com/gianlucacovini/SlicedWasserstein.jl/actions/workflows/Documentation.yml)
+
 `SlicedWasserstein.jl` is a lightweight Julia package for computations with
 finite discrete measures using sliced optimal transport.
 
