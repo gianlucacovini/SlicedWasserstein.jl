@@ -61,9 +61,10 @@ a small dependency footprint.
 ## Use of generative AI
 
 Some documentation and repository-maintenance changes were prepared with
-assistance from generative AI tools. All code, documentation, and package
-metadata are reviewed, edited, and validated by the human maintainer, who takes
-responsibility for the contents of the package.
+assistance from generative AI tools. Generative AI tools were also consulted
+in the deployment part, especially for tests and examples. All code,
+documentation, and package metadata are reviewed and validated by the human
+maintainer, who takes responsibility for the contents of the package.
 
 ## References
 
